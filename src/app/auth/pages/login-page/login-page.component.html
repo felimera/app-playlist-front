@@ -1,1 +1,25 @@
-<p>login-page works!</p>
+<div class="card position-absolute top-50 start-50 translate-middle" style="width: 30rem;">
+  <div class="card-body">
+    <h5 class="card-title">Sign in</h5>
+    <form class="form-control" [formGroup]="loginForm" (ngSubmit)="onSumit()">
+
+      <div class="mb-3">
+        <input type="email" class="form-control" placeholder="Enter email. (Ex. name@example.com)"
+          formControlName="email">
+        <span *ngIf="isValidField('email')" class="form-text text-danger">
+          {{getFieldError('email')}}
+        </span>
+      </div>
+      <div class="mb-3">
+        <input type="password" class="form-control" placeholder="Enter password." formControlName="password">
+        <span *ngIf="isValidField('password')" class="form-text text-danger">
+          {{getFieldError('password')}}
+        </span>
+      </div>
+      <div class="d-grid gap-2">
+        <button type="button" class="btn btn-link" (click)="onSignUp()">Sign up</button>
+        <button type="submit" class="btn btn-primary">Accept</button>
+      </div>
+    </form>
+  </div>
+</div>
