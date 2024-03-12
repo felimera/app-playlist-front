@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -23,10 +23,34 @@ export class SharedValidatorService {
         case 'minlength':
           return `Minimum ${errors['minlength'].requiredLength} caracters.`;
 
-        case 'email':
-          return `The format of the email ${form.get('email')} is incorrect.`;
+        case 'pattern':
+          return this.getMessageReturn(form, field);
       }
     }
+    return null;
+  }
+
+  public isFieldOneEqualFieldTwo(field1: string, field2: string) {
+    return (formGroup: AbstractControl): ValidationErrors | null => {
+      const fieldValue1 = formGroup.get(field1)?.value;
+      const fieldValue2 = formGroup.get(field2)?.value;
+
+      if (fieldValue1 !== fieldValue2) {
+        formGroup.get(field2)?.setErrors({ notEqual: true });
+        return { notEqual: true };
+      }
+
+      formGroup.get(field2)?.setErrors(null);
+      return null;
+    }
+  }
+
+  private getMessageReturn(form: FormGroup, field: string): string | null {
+    if (field === 'name')
+      return `The full name must have at least two strings of characters separated by a blank space.`;
+    if (field === 'email')
+      return `The email ${form.get('email')} is not formatted correctly. Ex: value@value.com`;
+
     return null;
   }
 }
