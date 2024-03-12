@@ -16,4 +16,8 @@ export class LoginService {
   postLogin(user: User): Observable<Token> {
     return this.http.post<Token>(`${this.baseUrl}/login`, user);
   }
+
+  postSignUp(user: User): Observable<User> {
+    return this.http.post<User>(`${this.baseUrl}/signup`, user);
+  }
 }

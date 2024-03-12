@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as customValidators from '../../../shared/validators/validator';
 import { SharedValidatorService } from '../../../shared/services/shared-validator.service';
 import { Router } from '@angular/router';
+import { User } from '../../interfaces/user.interface';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-register-page',
@@ -26,6 +28,7 @@ export class RegisterPageComponent {
   constructor(
     private formBuilder: FormBuilder,
     private sharedValidatorService: SharedValidatorService,
+    private loginService: LoginService,
     private router: Router
   ) { }
 
@@ -37,13 +40,26 @@ export class RegisterPageComponent {
     return this.sharedValidatorService.getFieldError(this.userForm, field);
   }
 
+  public currenteUser(): User {
+    const user = this.userForm.value as User;
+    return user;
+  }
   public onSumit(): void {
     if (this.userForm.invalid) {
       this.userForm.markAllAsTouched();
       return;
     }
 
-    console.log('this.userForm.value ', this.userForm.value);
+    this.loginService
+      .postSignUp(this.currenteUser())
+      .subscribe(user => {
+        if (user) {
+          // Message
+          setTimeout(() => {
+            this.router.navigate(['./auth/login']);
+          }, 2500);
+        }
+      });
   }
 
   public onLogin(): void {
