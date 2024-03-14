@@ -5,6 +5,14 @@ const routes: Routes = [
   {
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
+  },
+  {
+    path: 'playlist',
+    loadChildren: () => import('./play-list/play-list.module').then(m => m.PlayListModule),
+  },
+  {
+    path: '**',
+    redirectTo: 'playlist'
   }
 ];
 
