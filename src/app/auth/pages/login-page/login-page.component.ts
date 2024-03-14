@@ -7,6 +7,7 @@ import { SharedValidatorService } from '../../../shared/services/shared-validato
 import { User } from '../../interfaces/user.interface';
 
 import * as customValidators from '../../../shared/validators/validator';
+import { SharedToasterService } from '../../../shared/services/shared-toaster.service';
 
 @Component({
   selector: 'app-login-page',
@@ -25,6 +26,7 @@ export class LoginPageComponent {
     private loginService: LoginService,
     private router: Router,
     private sharedValidatorService: SharedValidatorService,
+    private sharedToasterService: SharedToasterService,
   ) { }
 
   public isValidField(field: string): boolean | null {
@@ -51,6 +53,7 @@ export class LoginPageComponent {
       .subscribe(token => {
         if (token) {
           localStorage.setItem('token', token.jwtToken);
+          this.sharedToasterService.info('Welcome', 'Login');
           setTimeout(() => {
             this.router.navigate(['./playlist']);
           }, 2500);

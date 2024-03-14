@@ -6,6 +6,7 @@ import { SharedValidatorService } from '../../../shared/services/shared-validato
 import { Router } from '@angular/router';
 import { User } from '../../interfaces/user.interface';
 import { LoginService } from '../../services/login.service';
+import { SharedToasterService } from '../../../shared/services/shared-toaster.service';
 
 @Component({
   selector: 'app-register-page',
@@ -29,7 +30,8 @@ export class RegisterPageComponent {
     private formBuilder: FormBuilder,
     private sharedValidatorService: SharedValidatorService,
     private loginService: LoginService,
-    private router: Router
+    private router: Router,
+    private sharedToasterService: SharedToasterService,
   ) { }
 
   public isValidField(field: string): boolean | null {
@@ -54,7 +56,7 @@ export class RegisterPageComponent {
       .postSignUp(this.currenteUser())
       .subscribe(user => {
         if (user) {
-          // Message
+          this.sharedToasterService.info(`The user ${user.name} created himself successfully.`, 'Sign-Up');
           setTimeout(() => {
             this.router.navigate(['./auth/login']);
           }, 2500);
