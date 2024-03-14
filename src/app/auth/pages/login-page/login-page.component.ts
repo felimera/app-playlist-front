@@ -1,8 +1,13 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LoginService } from '../../services/login.service';
-import { User } from '../../interfaces/user.interface';
 import { Router } from '@angular/router';
+
+import { LoginService } from '../../services/login.service';
+import { SharedValidatorService } from '../../../shared/services/shared-validator.service';
+import { User } from '../../interfaces/user.interface';
+
+import * as customValidators from '../../../shared/validators/validator';
+import { SharedToasterService } from '../../../shared/services/shared-toaster.service';
 
 @Component({
   selector: 'app-login-page',
@@ -12,7 +17,7 @@ import { Router } from '@angular/router';
 export class LoginPageComponent {
 
   public loginForm: FormGroup = this.formBuilder.group({
-    email: ['', [Validators.required, Validators.email]],
+    email: ['', [Validators.required, Validators.pattern(customValidators.emailPattern)]],
     password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
@@ -20,31 +25,16 @@ export class LoginPageComponent {
     private formBuilder: FormBuilder,
     private loginService: LoginService,
     private router: Router,
+    private sharedValidatorService: SharedValidatorService,
+    private sharedToasterService: SharedToasterService,
   ) { }
 
   public isValidField(field: string): boolean | null {
-    return this.loginForm.controls[field].errors
-      && this.loginForm.controls[field].touched;
+    return this.sharedValidatorService.isValidField(this.loginForm, field);
   }
 
   public getFieldError(field: string): string | null {
-    if (!this.loginForm.controls[field]) return null;
-
-    const errors = this.loginForm.controls[field].errors || {};
-
-    for (const key of Object.keys(errors)) {
-      switch (key) {
-        case 'required':
-          return 'This field is required.';
-
-        case 'minlength':
-          return `Minimum ${errors['minlength'].requiredLength} caracters.`;
-
-        case 'email':
-          return `The format of the email ${this.loginForm.get('email')} is incorrect.`;
-      }
-    }
-    return null;
+    return this.sharedValidatorService.getFieldError(this.loginForm, field);
   }
 
   get currentLogin(): User {
@@ -61,8 +51,13 @@ export class LoginPageComponent {
     this.loginService
       .postLogin(this.currentLogin)
       .subscribe(token => {
-        if (token)
-          console.log('token', token);
+        if (token) {
+          localStorage.setItem('token', token.jwtToken);
+          this.sharedToasterService.info('Welcome', 'Login');
+          setTimeout(() => {
+            this.router.navigate(['./playlist']);
+          }, 2500);
+        }
       });
   }
 
