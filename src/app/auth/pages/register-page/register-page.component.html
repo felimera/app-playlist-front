@@ -1,1 +1,36 @@
-<p>register-page works!</p>
+<div class="col  my-5 ">
+  <h3>User registration</h3>
+</div>
+<div class="col">
+  <form [formGroup]="userForm" (ngSubmit)="onSumit()">
+    <div class="col-12 m-2">
+      <label for="name" class="col-3 col-form-label">Enter the username</label>
+      <input type="text" class="col-6" id="name" placeholder="Enter the username" formControlName="name">
+      <span *ngIf="isValidField('name')" class="form-text text-danger mx-1">{{getFieldError('name')}}</span>
+    </div>
+    <div class="col-12 m-2">
+      <label for="email" class="col-3 col-form-label">Enter the user email</label>
+      <input type="email" class="col-6" id="email" placeholder="Enter the email" formControlName="email">
+      <span *ngIf="isValidField('email')" class="form-text text-danger mx-1">{{getFieldError('email')}}</span>
+    </div>
+    <div class="col-12 m-2">
+      <label for="password" class="col-3 col-form-label">Enter the user password</label>
+      <input type="password" class="col-6" id="password" placeholder="Enter the password" formControlName="password">
+      <span *ngIf="isValidField('password')" class="form-text text-danger mx-1">{{getFieldError('password')}}</span>
+    </div>
+    <div class="col-12 m-2">
+      <label for="password2" class="col-3 col-form-label">Confirm the password</label>
+      <input type="password" class="col-6" id="password2" placeholder="Enter the password" formControlName="password2">
+      <span *ngIf="isValidField('password2')" class="form-text text-danger mx-1">
+        Passwords must be the same.
+      </span>
+    </div>
+
+    <div class="row">
+      <div class="col ">
+        <button type="submit" class="btn btn-primary mx-2 px-5">Accept</button>
+        <button type="button" class="btn btn-light mx-5 px-5" (click)="onLogin()">Login</button>
+      </div>
+    </div>
+  </form>
+</div>
