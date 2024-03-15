@@ -6,6 +6,7 @@ import { ToastrModule } from 'ngx-toastr';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
+import { MaterialModule } from '../material/material.module';
 
 
 
@@ -23,6 +24,7 @@ import { SideMenuComponent } from './components/side-menu/side-menu.component';
       progressBar: true, // Show progress bar
     }),
     RouterModule,
+    MaterialModule,
   ],
   exports: [
     SideMenuComponent,

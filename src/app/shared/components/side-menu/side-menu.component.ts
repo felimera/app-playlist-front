@@ -4,7 +4,7 @@ import { MenuItem } from '../../interfaces/menu-item.interface';
 @Component({
   selector: 'shared-side-menu',
   templateUrl: './side-menu.component.html',
-  styles: ``
+  styleUrl: './side-menu.component.css'
 })
 export class SideMenuComponent {
 
@@ -23,8 +23,8 @@ export class SideMenuComponent {
 
   public isSelectedItem(code: string): string {
     if (code !== this.codeMenu) {
-      return 'nav-link';
+      return '';
     }
-    return 'nav-link text-bg-dark';
+    return 'primary';
   }
 }
