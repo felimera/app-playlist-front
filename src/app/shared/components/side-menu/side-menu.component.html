@@ -1,15 +1,11 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" routerLink="/playlist/register">Play Music</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+<mat-toolbar>
+  <span>Play Music</span>
+  <span class="example-spacer"></span>
+
+  <div *ngFor="let item of playlistMenu">
+    <button mat-raised-button class="mx-1" [color]="isSelectedItem(item.code)" (click)="addTitle(item.code)"
+      [routerLink]=" [item.route] ">
+      {{item.title}}
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav">
-        <li class="nav-item" *ngFor="let item of playlistMenu" class="list-group-item " [routerLink]="[item.route]">
-          <a [class]="isSelectedItem(item.code)" (click)="addTitle(item.code)">{{item.title}}</a>
-        </li>
-      </ul>
-    </div>
   </div>
-</nav>
+</mat-toolbar>
